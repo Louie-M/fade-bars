@@ -1,0 +1,14 @@
+## Interface: 80000
+## Title: Fade Bars
+## SavedVariables: SavedSettings
+## SavedVariablesPerCharacter: SavedSettings
+## Version: 0.0.1
+## Notes: Adjustable opacity on extra action bars and main menu bar.
+## Author: Louie McKeown
+## Email: louiemckeown@gmail.com
+## DefaultState: enabled
+
+
+config.lua
+init.lua
+fade.lua
