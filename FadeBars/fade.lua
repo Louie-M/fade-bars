@@ -20,7 +20,7 @@ local incombat = false;
 
 local currentfadeopacity = 0.1;
 local currenthoveropacity = 1;
-
+local currentmenubaropacity = 1;
 
 -- end Variables
 -- functions
@@ -68,7 +68,7 @@ function Fade:combatVariables()
 	MultiBarLeft:SetAlpha(currentfadeopacity);
 	MultiBarRight:SetAlpha(currentfadeopacity);
 		if options["fademenubar"] == true then
-			UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), currentfadeopacity);
+			UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), currentmenubaropacity);
 			--MainMenuBar:SetAlpha(currentfadeopacity);
 		else 
 			UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), 1);
@@ -92,7 +92,7 @@ function Fade:endcombatVariables()
 	MultiBarLeft:SetAlpha(currentfadeopacity);
 	MultiBarRight:SetAlpha(currentfadeopacity);
 		if options["fademenubar"] == true then
-			UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), currentfadeopacity);
+			UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), currentmenubaropacity);
 			--MainMenuBar:SetAlpha(currentfadeopacity);
 		else 
 			UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), 1);
@@ -120,11 +120,15 @@ function Fade:updateCurrentVariables()
 	MultiBarRight:SetAlpha(currentfadeopacity);
 	
 	if options["fademenubar"] == true then
-		UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), currentfadeopacity);
+		currentmenubaropacity = currentfadeopacity;
+		UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), currentmenubaropacity);
 		--MainMenuBar:SetAlpha(currentfadeopacity);
+
 	else 
-		UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), 1);
+		currentmenubaropacity = 1;
+		UIFrameFadeOut(MainMenuBar, options["fadeintime"], MainMenuBar:GetAlpha(), 1);
 		--MainMenuBar:SetAlpha(1);
+
 	end
 	
 end
@@ -174,69 +178,77 @@ end
 --RightBar End
 
 local function showmenubar1()
-	UIFrameFadeIn(MainMenuBar, options["fadeintime"], MainMenuBar:GetAlpha(), currenthoveropacity)
+	
+	
+			UIFrameFadeIn(MainMenuBar, options["fadeintime"], MainMenuBar:GetAlpha(), 1);
+			--print("Showing Bar");
+			--MainMenuBar:SetAlpha(1);
+			
+	--UIFrameFadeIn(MainMenuBar, options["fadeintime"], MainMenuBar:GetAlpha(), currenthoveropacity)
 end
 
 local function hidemenubar1()
-	UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), currentfadeopacity)
+	if options["fademenubar"] == true then
+			currentmenubaropacity = currentfadeopacity;
+			UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), currentmenubaropacity);
+			--MainMenuBar:SetAlpha(currentfadeopacity);
+			--print("fading");
+		else 
+			UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), 1);
+			--MainMenuBar:SetAlpha(1);
+			--print("Should still be showing bar even if hide function");
+		end
+	
+	--UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), currentfadeopacity)
 end
 
 
 
 
-MainMenuBar:HookScript("OnEnter", function(self) UIFrameFadeIn(MainMenuBar, options["fadeintime"], MainMenuBar:GetAlpha(), currenthoveropacity) end);
-MainMenuBar:HookScript("OnLeave", function(self) UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), currentfadeopacity) end);
-MainMenuBarArtFrame:HookScript("OnEnter", function(self) UIFrameFadeIn(MainMenuBar, options["fadeintime"], MainMenuBar:GetAlpha(), currenthoveropacity) end);
-MainMenuBarArtFrame:HookScript("OnLeave", function(self) UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), currentfadeopacity) end);
-MultiBarBottomLeft:HookScript("OnEnter", function(self) UIFrameFadeIn(MainMenuBar, options["fadeintime"], MainMenuBar:GetAlpha(), currenthoveropacity) end);
-MultiBarBottomLeft:HookScript("OnLeave", function(self) UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), currentfadeopacity) end);
-MultiBarBottomRight:HookScript("OnEnter", function(self) UIFrameFadeIn(MainMenuBar, options["fadeintime"], MainMenuBar:GetAlpha(), currenthoveropacity) end);
-MultiBarBottomRight:HookScript("OnLeave", function(self) UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), currentfadeopacity) end);
-MicroButtonAndBagsBar:HookScript("OnEnter", function(self) UIFrameFadeIn(MainMenuBar, options["fadeintime"], MainMenuBar:GetAlpha(), currenthoveropacity) end);
-MicroButtonAndBagsBar:HookScript("OnLeave", function(self) UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), currentfadeopacity) end);
-MainMenuBarBackpackButton:HookScript("OnEnter", function(self) UIFrameFadeIn(MainMenuBar, options["fadeintime"], MainMenuBar:GetAlpha(), currenthoveropacity) end);
-MainMenuBarBackpackButton:HookScript("OnLeave", function(self) UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), currentfadeopacity) end);
-CharacterMicroButton:HookScript("OnEnter", function(self) UIFrameFadeIn(MainMenuBar, options["fadeintime"], MainMenuBar:GetAlpha(), currenthoveropacity) end);
-CharacterMicroButton:HookScript("OnLeave", function(self) UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), currentfadeopacity) end);
-SpellbookMicroButton:HookScript("OnEnter", function(self) UIFrameFadeIn(MainMenuBar, options["fadeintime"], MainMenuBar:GetAlpha(), currenthoveropacity) end);
-SpellbookMicroButton:HookScript("OnLeave", function(self) UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), currentfadeopacity) end);
-TalentMicroButton:HookScript("OnEnter", function(self) UIFrameFadeIn(MainMenuBar, options["fadeintime"], MainMenuBar:GetAlpha(), currenthoveropacity) end);
-TalentMicroButton:HookScript("OnLeave", function(self) UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), currentfadeopacity) end);
-TalentMicroButton:HookScript("OnEnter", function(self) UIFrameFadeIn(MainMenuBar, options["fadeintime"], MainMenuBar:GetAlpha(), currenthoveropacity) end);
-TalentMicroButton:HookScript("OnLeave", function(self) UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), currentfadeopacity) end);
-AchievementMicroButton:HookScript("OnEnter", function(self) UIFrameFadeIn(MainMenuBar, options["fadeintime"], MainMenuBar:GetAlpha(), currenthoveropacity) end);
-AchievementMicroButton:HookScript("OnLeave", function(self) UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), currentfadeopacity) end);
-QuestLogMicroButton:HookScript("OnEnter", function(self) UIFrameFadeIn(MainMenuBar, options["fadeintime"], MainMenuBar:GetAlpha(), currenthoveropacity) end);
-QuestLogMicroButton:HookScript("OnLeave", function(self) UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), currentfadeopacity) end);
-GuildMicroButton:HookScript("OnEnter", function(self) UIFrameFadeIn(MainMenuBar, options["fadeintime"], MainMenuBar:GetAlpha(), currenthoveropacity) end);
-GuildMicroButton:HookScript("OnLeave", function(self) UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), currentfadeopacity) end);
-LFDMicroButton:HookScript("OnEnter", function(self) UIFrameFadeIn(MainMenuBar, options["fadeintime"], MainMenuBar:GetAlpha(), currenthoveropacity) end);
-LFDMicroButton:HookScript("OnLeave", function(self) UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), currentfadeopacity) end);
-CollectionsMicroButton:HookScript("OnEnter", function(self) UIFrameFadeIn(MainMenuBar, options["fadeintime"], MainMenuBar:GetAlpha(), currenthoveropacity) end);
-CollectionsMicroButton:HookScript("OnLeave", function(self) UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), currentfadeopacity) end);
-EJMicroButton:HookScript("OnEnter", function(self) UIFrameFadeIn(MainMenuBar, options["fadeintime"], MainMenuBar:GetAlpha(), currenthoveropacity) end);
-EJMicroButton:HookScript("OnLeave", function(self) UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), currentfadeopacity) end);
-StoreMicroButton:HookScript("OnEnter", function(self) UIFrameFadeIn(MainMenuBar, options["fadeintime"], MainMenuBar:GetAlpha(), currenthoveropacity) end);
-StoreMicroButton:HookScript("OnLeave", function(self) UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), currentfadeopacity) end);
-MainMenuMicroButton:HookScript("OnEnter", function(self) UIFrameFadeIn(MainMenuBar, options["fadeintime"], MainMenuBar:GetAlpha(), currenthoveropacity) end);
-MainMenuMicroButton:HookScript("OnLeave", function(self) UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), currentfadeopacity) end);
-MainMenuBarBackpackButton:HookScript("OnEnter", function(self) UIFrameFadeIn(MainMenuBar, options["fadeintime"], MainMenuBar:GetAlpha(), currenthoveropacity) end);
-MainMenuBarBackpackButton:HookScript("OnLeave", function(self) UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), currentfadeopacity) end);
-ActionBarUpButton:HookScript("OnEnter", function(self) UIFrameFadeIn(MainMenuBar, options["fadeintime"], MainMenuBar:GetAlpha(), currenthoveropacity) end);
-ActionBarUpButton:HookScript("OnLeave", function(self) UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), currentfadeopacity) end);
-ActionBarDownButton:HookScript("OnEnter", function(self) UIFrameFadeIn(MainMenuBar, options["fadeintime"], MainMenuBar:GetAlpha(), currenthoveropacity) end);
-ActionBarDownButton:HookScript("OnLeave", function(self) UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), currentfadeopacity) end);
-MainMenuBarArtFrame:HookScript("OnEnter", function(self) UIFrameFadeIn(MainMenuBar, options["fadeintime"], MainMenuBar:GetAlpha(), currenthoveropacity) end);
-MainMenuBarArtFrame:HookScript("OnLeave", function(self) UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), currentfadeopacity) end);
--- ReputationBarMixin:HookScript("OnEnter", function(self) UIFrameFadeIn(MainMenuBar, options["fadeintime"], MainMenuBar:GetAlpha(), currenthoveropacity) end);
--- ReputationBarMixin:HookScript("OnLeave", function(self) UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), currentfadeopacity) end);
--- StatusTrackingBarManager.SingleBarLargeUpper:HookScript("OnEnter", function(self) UIFrameFadeIn(MainMenuBar, options["fadeintime"], MainMenuBar:GetAlpha(), currenthoveropacity) end);
--- StatusTrackingBarManager.SingleBarLargeUpper:HookScript("OnLeave", function(self) UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), currentfadeopacity) end);
--- StatusTrackingBarManager.SingleBarSmall:HookScript("OnEnter", function(self) UIFrameFadeIn(MainMenuBar, options["fadeintime"], MainMenuBar:GetAlpha(), currenthoveropacity) end);
--- StatusTrackingBarManager.SingleBarSmall:HookScript("OnLeave", function(self) UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), currentfadeopacity) end);
--- StatusTrackingBarManager.SingleBarSmallUpper:HookScript("OnEnter", function(self) UIFrameFadeIn(MainMenuBar, options["fadeintime"], MainMenuBar:GetAlpha(), currenthoveropacity) end);
--- StatusTrackingBarManager.SingleBarSmallUpper:HookScript("OnLeave", function(self) UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), currentfadeopacity) end);
-
+MainMenuBar:HookScript("OnEnter",showmenubar1);
+MainMenuBar:HookScript("OnLeave",hidemenubar1);
+MainMenuBarArtFrame:HookScript("OnEnter",showmenubar1);
+MainMenuBarArtFrame:HookScript("OnLeave",hidemenubar1);
+MultiBarBottomLeft:HookScript("OnEnter",showmenubar1);
+MultiBarBottomLeft:HookScript("OnLeave",hidemenubar1);
+MultiBarBottomRight:HookScript("OnEnter",showmenubar1);
+MultiBarBottomRight:HookScript("OnLeave",hidemenubar1);
+MicroButtonAndBagsBar:HookScript("OnEnter",showmenubar1);
+MicroButtonAndBagsBar:HookScript("OnLeave",hidemenubar1);
+MainMenuBarBackpackButton:HookScript("OnEnter",showmenubar1);
+MainMenuBarBackpackButton:HookScript("OnLeave",hidemenubar1);
+CharacterMicroButton:HookScript("OnEnter",showmenubar1);
+CharacterMicroButton:HookScript("OnLeave",hidemenubar1);
+SpellbookMicroButton:HookScript("OnEnter",showmenubar1);
+SpellbookMicroButton:HookScript("OnLeave",hidemenubar1);
+TalentMicroButton:HookScript("OnEnter",showmenubar1);
+TalentMicroButton:HookScript("OnLeave",hidemenubar1);
+TalentMicroButton:HookScript("OnEnter",showmenubar1);
+TalentMicroButton:HookScript("OnLeave",hidemenubar1);
+AchievementMicroButton:HookScript("OnEnter",showmenubar1);
+AchievementMicroButton:HookScript("OnLeave",hidemenubar1);
+QuestLogMicroButton:HookScript("OnEnter",showmenubar1);
+QuestLogMicroButton:HookScript("OnLeave",hidemenubar1);
+GuildMicroButton:HookScript("OnEnter",showmenubar1);
+GuildMicroButton:HookScript("OnLeave",hidemenubar1);
+LFDMicroButton:HookScript("OnEnter",showmenubar1);
+LFDMicroButton:HookScript("OnLeave",hidemenubar1);
+CollectionsMicroButton:HookScript("OnEnter",showmenubar1);
+CollectionsMicroButton:HookScript("OnLeave",hidemenubar1);
+EJMicroButton:HookScript("OnEnter",showmenubar1);
+EJMicroButton:HookScript("OnLeave",hidemenubar1);
+StoreMicroButton:HookScript("OnEnter",showmenubar1);
+StoreMicroButton:HookScript("OnLeave",hidemenubar1);
+MainMenuMicroButton:HookScript("OnEnter",showmenubar1);
+MainMenuMicroButton:HookScript("OnLeave",hidemenubar1);
+MainMenuBarBackpackButton:HookScript("OnEnter",showmenubar1);
+MainMenuBarBackpackButton:HookScript("OnLeave",hidemenubar1);
+ActionBarUpButton:HookScript("OnEnter",showmenubar1);
+ActionBarUpButton:HookScript("OnLeave",hidemenubar1);
+ActionBarDownButton:HookScript("OnEnter",showmenubar1);
+ActionBarDownButton:HookScript("OnLeave",hidemenubar1);
+MainMenuBarArtFrame:HookScript("OnEnter",showmenubar1);
+MainMenuBarArtFrame:HookScript("OnLeave",hidemenubar1);
 
 for btn=1,12 do
     _G["MultiBarBottomLeftButton"..btn]:HookScript("OnEnter",showmenubar1)
