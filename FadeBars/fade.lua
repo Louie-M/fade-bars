@@ -62,12 +62,14 @@ function Fade:combatVariables()
 	--print("called combatVariables function");
 	
 	if options["setfadecombat"] == true then
-	currentfadeopacity = options["combatfadeopacity"];
-	currenthoveropacity = options["combathoveropacity"];
-	
-	MultiBarLeft:SetAlpha(currentfadeopacity);
-	MultiBarRight:SetAlpha(currentfadeopacity);
+		currentfadeopacity = options["combatfadeopacity"];
+		currenthoveropacity = options["combathoveropacity"];
+		UIFrameFadeOut(MultiBarLeft, options["fadeouttime"], MultiBarLeft:GetAlpha(), currentfadeopacity);
+		UIFrameFadeOut(MultiBarRight, options["fadeouttime"], MultiBarRight:GetAlpha(), currentfadeopacity);
+		--MultiBarLeft:SetAlpha(currentfadeopacity);
+		--MultiBarRight:SetAlpha(currentfadeopacity);
 		if options["fademenubar"] == true then
+			currentmenubaropacity = options["combatfadeopacity"];
 			UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), currentmenubaropacity);
 			--MainMenuBar:SetAlpha(currentfadeopacity);
 		else 
@@ -86,14 +88,14 @@ function Fade:endcombatVariables()
 	
 	
 	if options["setfadecombat"] == true then
-	currentfadeopacity = options["fadeopacity"];
-	currenthoveropacity = options["hoveropacity"];
 	
-	MultiBarLeft:SetAlpha(currentfadeopacity);
-	MultiBarRight:SetAlpha(currentfadeopacity);
+		currentfadeopacity = options["fadeopacity"];
+		currenthoveropacity = options["hoveropacity"];
+		UIFrameFadeOut(MultiBarLeft, options["fadeouttime"], MultiBarLeft:GetAlpha(), currentfadeopacity);
+		UIFrameFadeOut(MultiBarRight, options["fadeouttime"], MultiBarRight:GetAlpha(), currentfadeopacity);
 		if options["fademenubar"] == true then
+			currentmenubaropacity = options["fadeopacity"];
 			UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), currentmenubaropacity);
-			--MainMenuBar:SetAlpha(currentfadeopacity);
 		else 
 			UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), 1);
 			--MainMenuBar:SetAlpha(1);
@@ -114,10 +116,13 @@ function Fade:updateCurrentVariables()
 	elseif incombat == true  and options["setfadecombat"] == true then
 	currentfadeopacity = options["combatfadeopacity"];
 	currenthoveropacity = options["combathoveropacity"];
+	elseif incombat == true and options["setfadecombat"] == false then
+		currentfadeopacity = options["fadeopacity"];
+		currenthoveropacity = options["hoveropacity"];
 	end
 
-	MultiBarLeft:SetAlpha(currentfadeopacity);
-	MultiBarRight:SetAlpha(currentfadeopacity);
+	UIFrameFadeOut(MultiBarLeft, options["fadeouttime"], MultiBarLeft:GetAlpha(), currentfadeopacity);
+	UIFrameFadeOut(MultiBarRight, options["fadeouttime"], MultiBarRight:GetAlpha(), currentfadeopacity);
 	
 	if options["fademenubar"] == true then
 		currentmenubaropacity = currentfadeopacity;
@@ -136,10 +141,6 @@ end
 
 -----------------------------------------------
 
-MultiBarLeft:HookScript("OnEnter", function(self) UIFrameFadeIn(MultiBarLeft, options["fadeintime"], MultiBarLeft:GetAlpha(), currenthoveropacity) end)
-MultiBarLeft:HookScript("OnLeave", function(self) UIFrameFadeOut(MultiBarLeft, options["fadeouttime"], MultiBarLeft:GetAlpha(), currentfadeopacity) end)
-
-
 local function showbar1()
 	UIFrameFadeIn(MultiBarLeft, options["fadeintime"], MultiBarLeft:GetAlpha(), currenthoveropacity)
 
@@ -150,17 +151,19 @@ local function hidebar1()
 end
 
 
+MultiBarLeft:HookScript("OnEnter", showbar1)
+MultiBarLeft:HookScript("OnLeave", hidebar1)
+
+
 
  for btn=1,12 do
-    _G["MultiBarLeftButton"..btn]:HookScript("OnEnter",showbar1)
-    _G["MultiBarLeftButton"..btn]:HookScript("OnLeave",hidebar1)
+    _G["MultiBarLeftButton"..btn]:HookScript("OnEnter", showbar1)
+    _G["MultiBarLeftButton"..btn]:HookScript("OnLeave", hidebar1)
  end
 --Left Bar Start End
 
 --RightBar Start
 
-MultiBarRight:HookScript("OnEnter", function(self) UIFrameFadeIn(MultiBarRight, options["fadeintime"], MultiBarRight:GetAlpha(), currenthoveropacity) end)
-MultiBarRight:HookScript("OnLeave", function(self) UIFrameFadeOut(MultiBarRight, options["fadeouttime"], MultiBarRight:GetAlpha(), currentfadeopacity) end)
 
 local function showbar2()
 	UIFrameFadeIn(MultiBarRight, options["fadeintime"], MultiBarRight:GetAlpha(), currenthoveropacity)
@@ -170,9 +173,12 @@ local function hidebar2()
 	UIFrameFadeOut(MultiBarRight, options["fadeouttime"], MultiBarRight:GetAlpha(), currentfadeopacity)
 end
 
+MultiBarRight:HookScript("OnEnter", showbar2)
+MultiBarRight:HookScript("OnLeave", hidebar2)
+
 for btn=1,12 do
-    _G["MultiBarRightButton"..btn]:HookScript("OnEnter",showbar2)
-    _G["MultiBarRightButton"..btn]:HookScript("OnLeave",hidebar2)
+    _G["MultiBarRightButton"..btn]:HookScript("OnEnter", showbar2)
+    _G["MultiBarRightButton"..btn]:HookScript("OnLeave", hidebar2)
 end
 
 --RightBar End

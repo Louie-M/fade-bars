@@ -175,6 +175,13 @@ function Config:CreateMenu()
 		ReloadUI();
 	end)
 	
+	UIConfig.infolabel = UIConfig:CreateFontString();
+		UIConfig.infolabel:SetPoint("CENTER", UIConfig.reloadBtn, "CENTER", 60, -30);
+		UIConfig.infolabel:SetSize(200,20);
+		UIConfig.infolabel:SetFontObject("GameFontNormalSmall");
+		UIConfig.infolabel:SetText("@louiemckeown 0.0.3")
+	
+	
 	UIConfig:Hide();
 	return UIConfig;
 	

@@ -2,7 +2,7 @@
 ## Title: Fade Bars
 ## SavedVariables: SavedSettings
 ## SavedVariablesPerCharacter: SavedSettings
-## Version: 0.0.2
+## Version: 0.0.3
 ## Notes: Adjustable opacity on extra action bars and main menu bar.
 ## Author: Louie McKeown
 ## Email: louiemckeown@gmail.com
