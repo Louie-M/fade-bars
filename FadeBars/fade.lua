@@ -255,6 +255,10 @@ ActionBarDownButton:HookScript("OnEnter",showmenubar1);
 ActionBarDownButton:HookScript("OnLeave",hidemenubar1);
 MainMenuBarArtFrame:HookScript("OnEnter",showmenubar1);
 MainMenuBarArtFrame:HookScript("OnLeave",hidemenubar1);
+PetActionBarFrame:HookScript("OnEnter",showmenubar1);
+PetActionBarFrame:HookScript("OnLeave",hidemenubar1);
+----Testing StatusTrackingBarManager.SingleBarSmall:HookScript("OnEnter",showmenubar1);
+---- StatusTrackingBarManager.SingleBarSmall:HookScript("OnLeave",hidemenubar1);
 
 for btn=1,12 do
     _G["MultiBarBottomLeftButton"..btn]:HookScript("OnEnter",showmenubar1)
@@ -277,5 +281,9 @@ for btn=0,3 do
     _G["CharacterBag"..btn.."Slot"]:HookScript("OnLeave",hidemenubar1)
 end
 
+for btn=1,10 do
+	_G["PetActionButton"..btn]:HookScript("OnEnter",showmenubar1)
+	_G["PetActionButton"..btn]:HookScript("OnLeave",showmenubar1)
+end
 
 --function events:PLAYER_ENTER_COMBAT()
