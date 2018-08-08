@@ -2,7 +2,7 @@
 ## Title: Fade Bars
 ## SavedVariables: SavedSettings
 ## SavedVariablesPerCharacter: SavedSettings
-## Version: 0.0.5b
+## Version: 0.1.0b
 ## Notes: /fadebars Adjustable opacity on extra action bars and main menu bar.
 ## Author: Louie McKeown
 ## Email: louiemckeown@gmail.com
@@ -11,4 +11,5 @@
 
 config.lua
 init.lua
+animation.lua
 fade.lua
