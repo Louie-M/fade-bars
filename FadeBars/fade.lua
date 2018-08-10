@@ -285,7 +285,7 @@ end
 
 for btn=1,10 do
 	_G["PetActionButton"..btn]:HookScript("OnEnter",showmenubar1)
-	_G["PetActionButton"..btn]:HookScript("OnLeave",showmenubar1)
+	_G["PetActionButton"..btn]:HookScript("OnLeave",hidemenubar1)
 end
 
 
