@@ -66,7 +66,6 @@ end
 
 -- WARNING: self automatically becomes events frame!
 function core:init(event, name, arg1)
-
 	if event == "PLAYER_REGEN_DISABLED" then
 		-- run set combat variables function
 		--print("init file detected combat");
@@ -122,10 +121,6 @@ function core:init(event, name, arg1)
 		
 		
 	end
-	
-	
-	
-		
 end
 
 local events = CreateFrame("Frame");

@@ -22,6 +22,14 @@ local currentfadeopacity = 0.1;
 local currenthoveropacity = 1;
 local currentmenubaropacity = 1;
 
+local hoveringmainbar = false;
+local hoveringleft = false;
+local hoveringright = false;
+local SpellFlyout = SpellFlyout;
+local FlyoutShown = false;
+local FlyoutName = "none";
+local FlyoutUpdated = false;
+
 -- end Variables
 -- functions
 
@@ -48,6 +56,40 @@ if options["fademenubar"] == true then
 end
 
 end
+
+
+function SpellFlyoutOnShow ()
+	
+	local parent = SpellFlyout:GetParent();
+	local barparent = parent:GetParent();
+
+	FlyoutName = barparent:GetName();
+	FlyoutShown = true;
+
+end
+function SpellFlyoutOnHide ()
+	local parent = SpellFlyout:GetParent();
+	local barparent = parent:GetParent();	
+	FlyoutShown = false;
+	FlyoutUpdated = false;
+	FlyoutName = "none";
+	Fade:updateCurrentVariables();
+	
+end
+
+function SpellFlyoutUpdate ()
+	local barparent = SpellFlyout:GetParent():GetParent();
+	
+	if FlyoutName ~= barparent:GetName() and FlyoutUpdated == false then
+		FlyoutName = barparent:GetName();
+		Fade:updateCurrentVariables();
+		FlyoutUpdated = true;	
+	elseif FlyoutName == barparent:GetName() then
+		FlyoutUpdated = false;
+	end
+		
+end
+
 -------------------------------------------------------
 
 
@@ -68,7 +110,6 @@ function Fade:combatVariables()
 			core.Anim:UIFrameFadeOut(MainMenuBar:GetName(), options["fadeouttime"], MainMenuBar:GetAlpha(), currentmenubaropacity);
 		else 
 			core.Anim:UIFrameFadeOut(MainMenuBar:GetName(), options["fadeouttime"], MainMenuBar:GetAlpha(), 1);
-			UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), 1);
 		end
 	end
 	incombat = true;
@@ -78,21 +119,40 @@ end
 
 function Fade:endcombatVariables()
 		if options["setfadecombat"] == true then
-	
-		currentfadeopacity = options["fadeopacity"];
-		currenthoveropacity = options["hoveropacity"];
 		
-		core.Anim:UIFrameFadeOut(MultiBarLeft:GetName(), options["fadeouttime"], MultiBarLeft:GetAlpha(), currentfadeopacity);
-		
-		core.Anim:UIFrameFadeOut(MultiBarRight:GetName(), options["fadeouttime"], MultiBarRight:GetAlpha(), currentfadeopacity);
-		if options["fademenubar"] == true then
-			currentmenubaropacity = options["fadeopacity"];
-			core.Anim:UIFrameFadeOut(MainMenuBar:GetName(), options["fadeouttime"], MainMenuBar:GetAlpha(), currentmenubaropacity);
-		else 
-			core.Anim:UIFrameFadeOut(MainMenuBar:GetName(), options["fadeouttime"], MainMenuBar:GetAlpha(), 1);
-			UIFrameFadeOut(MainMenuBar, options["fadeouttime"], MainMenuBar:GetAlpha(), 1);
+			currentfadeopacity = options["fadeopacity"];
+			currenthoveropacity = options["hoveropacity"];
+			
+			
+			if FlyoutShown == true and FlyoutName == "MultiBarLeft" then
+				core.Anim:UIFrameFadeOut(MultiBarLeft:GetName(), options["fadeouttime"], MultiBarLeft:GetAlpha(), 1);
+			elseif FlyoutName ~= "MultiBarLeft" or FlyoutShown == false then
+				core.Anim:UIFrameFadeOut(MultiBarLeft:GetName(), options["fadeouttime"], MultiBarLeft:GetAlpha(), currentfadeopacity);
+			end
+			if FlyoutShown == true and FlyoutName == "MultiBarRight" then
+				core.Anim:UIFrameFadeOut(MultiBarRight:GetName(), options["fadeouttime"], MultiBarRight:GetAlpha(), 1);	 
+			elseif FlyoutName ~= "MultiBarRight" or FlyoutShown == false then
+				core.Anim:UIFrameFadeOut(MultiBarRight:GetName(), options["fadeouttime"], MultiBarRight:GetAlpha(), currentfadeopacity);
+			end
+			
+				
+			
+			if options["fademenubar"] == true then
+				currentmenubaropacity = options["fadeopacity"];
+				core.Anim:UIFrameFadeOut(MainMenuBar:GetName(), options["fadeouttime"], MainMenuBar:GetAlpha(), currentmenubaropacity);
+			else 
+				core.Anim:UIFrameFadeOut(MainMenuBar:GetName(), options["fadeouttime"], MainMenuBar:GetAlpha(), 1);
+			end
+			
+			if FlyoutShown == true and FlyoutName == "MainMenuBarArtFrame" then
+				core.Anim:UIFrameFadeOut(MainMenuBar:GetName(), options["fadeouttime"], MainMenuBar:GetAlpha(), 1);
+			elseif FlyoutShown == true and FlyoutName == "MultiBarBottomLeft" then
+				core.Anim:UIFrameFadeOut(MainMenuBar:GetName(), options["fadeouttime"], MainMenuBar:GetAlpha(), 1);
+			elseif FlyoutShown == true and FlyoutName == "MultiBarBottomRight" then
+				core.Anim:UIFrameFadeOut(MainMenuBar:GetName(), options["fadeouttime"], MainMenuBar:GetAlpha(), 1);
+			
+			end
 		end
-	end
 	incombat = false;
 	
 return
@@ -112,12 +172,14 @@ function Fade:updateCurrentVariables()
 		currentfadeopacity = options["fadeopacity"];
 		currenthoveropacity = options["hoveropacity"];
 	end
-	core.Anim:UIFrameFadeOut(MultiBarLeft:GetName(), options["fadeouttime"], MultiBarLeft:GetAlpha(), currentfadeopacity);
-	core.Anim:UIFrameFadeOut(MultiBarRight:GetName(), options["fadeouttime"], MultiBarRight:GetAlpha(), currentfadeopacity);
+	
+	if hoveringleft == false then core.Anim:UIFrameFadeOut(MultiBarLeft:GetName(), options["fadeouttime"], MultiBarLeft:GetAlpha(), currentfadeopacity);	end
+	
+	if hoveringright == false then core.Anim:UIFrameFadeOut(MultiBarRight:GetName(), options["fadeouttime"], MultiBarRight:GetAlpha(), currentfadeopacity); end
 	
 	if options["fademenubar"] == true then
 		currentmenubaropacity = currentfadeopacity;
-		core.Anim:UIFrameFadeOut(MainMenuBar:GetName(), options["fadeouttime"], MainMenuBar:GetAlpha(), currentmenubaropacity);
+		if hoveringmainbar == false then core.Anim:UIFrameFadeOut(MainMenuBar:GetName(), options["fadeouttime"], MainMenuBar:GetAlpha(), currentmenubaropacity); end
 
 	else 
 		currentmenubaropacity = 1;
@@ -131,11 +193,17 @@ end
 -----------------------------------------------
 
 local function showbar1()
+	hoveringleft = true;
 	core.Anim:UIFrameFadeIn(MultiBarLeft:GetName(), options["fadeintime"], MultiBarLeft:GetAlpha(), currenthoveropacity)
 end
 
 local function hidebar1()
-	core.Anim:UIFrameFadeOut(MultiBarLeft:GetName(), options["fadeouttime"], MultiBarLeft:GetAlpha(), currentfadeopacity)
+	hoveringleft = false;
+	if FlyoutShown == true and FlyoutName == "MultiBarLeft" then
+		core.Anim:UIFrameFadeOut(MultiBarLeft:GetName(), options["fadeouttime"], MultiBarLeft:GetAlpha(), 1);
+	elseif FlyoutName ~= "MultiBarLeft" or FlyoutShown == false then
+		core.Anim:UIFrameFadeOut(MultiBarLeft:GetName(), options["fadeouttime"], MultiBarLeft:GetAlpha(), currentfadeopacity);
+	end
 end
 	
 MultiBarLeft:HookScript("OnEnter", showbar1)
@@ -155,11 +223,17 @@ MultiBarLeft:HookScript("OnLeave", hidebar1)
 
 
 local function showbar2()
+	hoveringright = true;
 	core.Anim:UIFrameFadeIn(MultiBarRight:GetName(), options["fadeintime"], MultiBarRight:GetAlpha(), currenthoveropacity)
 end
 	
 local function hidebar2()
-	core.Anim:UIFrameFadeOut(MultiBarRight:GetName(), options["fadeouttime"], MultiBarRight:GetAlpha(), currentfadeopacity)
+	hoveringright = false;
+	if FlyoutShown == true and FlyoutName == "MultiBarRight" then
+		core.Anim:UIFrameFadeOut(MultiBarRight:GetName(), options["fadeouttime"], MultiBarRight:GetAlpha(), 1);	 
+	elseif FlyoutName ~= "MultiBarRight" or FlyoutShown == false then
+		core.Anim:UIFrameFadeOut(MultiBarRight:GetName(), options["fadeouttime"], MultiBarRight:GetAlpha(), currentfadeopacity);
+	end
 end
 
 MultiBarRight:HookScript("OnEnter", showbar2)
@@ -176,16 +250,26 @@ end
 --Main Menu Start (Whole Bottom Bar.  Might separate soon.)
 
 local function showmenubar1()
+		hoveringmainbar = true;
 			core.Anim:UIFrameFadeIn(MainMenuBar:GetName(), options["fadeintime"], MainMenuBar:GetAlpha(), currenthoveropacity)
 end
 
 local function hidemenubar1()
-	if options["fademenubar"] == true then
+		hoveringmainbar = false;
+		if options["fademenubar"] == true then
 			currentmenubaropacity = currentfadeopacity;
-			core.Anim:UIFrameFadeOut(MainMenuBar:GetName(), options["fadeouttime"], MainMenuBar:GetAlpha(), currentfadeopacity)
+			if FlyoutShown == true and FlyoutName == "MainMenuBarArtFrame" then
+				core.Anim:UIFrameFadeOut(MainMenuBar:GetName(), options["fadeouttime"], MainMenuBar:GetAlpha(), 1);
+			elseif FlyoutShown == true and FlyoutName == "MultiBarBottomLeft" then
+				core.Anim:UIFrameFadeOut(MainMenuBar:GetName(), options["fadeouttime"], MainMenuBar:GetAlpha(), 1);
+			elseif FlyoutShown == true and FlyoutName == "MultiBarBottomRight" then
+				core.Anim:UIFrameFadeOut(MainMenuBar:GetName(), options["fadeouttime"], MainMenuBar:GetAlpha(), 1);
+			elseif FlyoutName ~= "MainMenuBarArtFrame" or FlyoutShown == false then
+				core.Anim:UIFrameFadeOut(MainMenuBar:GetName(), options["fadeouttime"], MainMenuBar:GetAlpha(), currentfadeopacity);
+			end
 			
 		else 
-			core.Anim:UIFrameFadeOut(MainMenuBar:GetName(), options["fadeouttime"], MainMenuBar:GetAlpha(), currentfadeopacity)
+			core.Anim:UIFrameFadeOut(MainMenuBar:GetName(), options["fadeouttime"], MainMenuBar:GetAlpha(), 1)
 			
 		end
 	
@@ -287,5 +371,8 @@ for btn=1,10 do
 	_G["PetActionButton"..btn]:HookScript("OnEnter",showmenubar1)
 	_G["PetActionButton"..btn]:HookScript("OnLeave",hidemenubar1)
 end
+ 
 
-
+SpellFlyout:HookScript("OnShow", SpellFlyoutOnShow);
+SpellFlyout:HookScript("OnUpdate", SpellFlyoutUpdate);
+SpellFlyout:HookScript("OnHide", SpellFlyoutOnHide);
