@@ -117,10 +117,9 @@ function core:init(event, name, arg1)
 		end
 		--print("TESTING LOAD");
 		core.Config.LoadSaved();
-		
-		
-		
 	end
+	
+
 end
 
 local events = CreateFrame("Frame");
@@ -129,5 +128,6 @@ events:RegisterEvent("PLAYER_LOGOUT");
 events:RegisterEvent("PLAYER_ENTERING_WORLD");
 events:RegisterEvent("PLAYER_REGEN_DISABLED");
 events:RegisterEvent("PLAYER_REGEN_ENABLED");
+
 events:SetScript("OnEvent", core.init);
 

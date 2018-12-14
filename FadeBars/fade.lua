@@ -1,7 +1,6 @@
 --No Idea What I Am Doing
 local _, core = ...;
 core.Fade = {};
-
 local Fade = core.Fade;
 
 --Fallback Variables  Replaced After Load
@@ -14,7 +13,6 @@ options = {
 	["fadeouttime"] = 0.5,
 	["fademenubar"] = true,
 	["setfadecombat"] = true;
-	
 }
 local incombat = false;
 
@@ -29,7 +27,8 @@ local SpellFlyout = SpellFlyout;
 local FlyoutShown = false;
 local FlyoutName = "none";
 local FlyoutUpdated = false;
-
+local StatusTrackingBarNames = {};
+local StatusLoaded = false;
 -- end Variables
 -- functions
 
@@ -49,11 +48,11 @@ core.Anim:UIFrameFadeIn(MultiBarLeft:GetName(), options["fadeintime"], MultiBarL
 MultiBarRight:EnableMouse(true)
 core.Anim:UIFrameFadeIn(MultiBarRight:GetName(), options["fadeintime"], MultiBarRight:GetAlpha(), currentfadeopacity)
 MainMenuBar:EnableMouse(true);
-if options["fademenubar"] == true then
+	if options["fademenubar"] == true then
 		core.Anim:UIFrameFadeIn(MainMenuBar:GetName(), options["fadeintime"], MainMenuBar:GetAlpha(), currentfadeopacity)
 	else 
 		core.Anim:UIFrameFadeIn(MainMenuBar:GetName(), options["fadeintime"], MainMenuBar:GetAlpha(), 1)
-end
+	end
 
 end
 
@@ -89,7 +88,6 @@ function SpellFlyoutUpdate ()
 	end
 		
 end
-
 -------------------------------------------------------
 
 
@@ -157,6 +155,34 @@ function Fade:endcombatVariables()
 	
 return
 end
+
+
+-- function getStatusBars ()
+	
+	-- if #StatusTrackingBarNames == 0 then
+		-- print("RUNNING");
+		-- for i, bar in ipairs(StatusTrackingBarManager.bars) do
+			-- --
+			-- tinsert(StatusTrackingBarNames,i,strlower(strsub(tostring(bar),13)));
+		-- end
+	
+		-- for i, bar in ipairs(StatusTrackingBarNames) do
+			-- print(bar);
+						
+		-- end
+		-- for i, v in ipairs(StatusTrackingBarNames) do
+			-- -- StatusTrackingBarManager.v:HookScript("OnEnter",showmenubar1);
+			-- -- StatusTrackingBarManager.v:HookScript("OnLeave",hidemenubar1);
+		-- end
+		
+		-- local bars = StatusTrackingBarManager.bars;
+		-- for i, v in ipairs(bars) do
+			-- print(v);
+		-- end
+		
+	-- end
+	
+-- end
 
 ----------------------------------------------
 --Update Variables and SavedSettings
@@ -275,9 +301,6 @@ local function hidemenubar1()
 	
 end
 
-
-
-
 MainMenuBar:HookScript("OnEnter",showmenubar1);
 MainMenuBar:HookScript("OnLeave",hidemenubar1);
 MainMenuBarArtFrame:HookScript("OnEnter",showmenubar1);
@@ -326,26 +349,8 @@ PetActionBarFrame:HookScript("OnEnter",showmenubar1);
 PetActionBarFrame:HookScript("OnLeave",hidemenubar1);
 ExtraActionButton1:HookScript("OnEnter",showmenubar1);
 ExtraActionButton1:HookScript("OnLeave",hidemenubar1);
-
---Experimenting with stuff
---Ignore
--- function barbar()
-	
-	-- for i, bar in ipairs(StatusTrackingBarManager.bars) do
-		-- if(bar:ShouldBeVisible()) then
-			-- print(bar:GetName());
-				-- bar:HookScript("OnEnter",showmenubar1);
-				
-
-		-- end
-
-	-- end
-
--- end
-
--- StatusTrackingBarManager.bars.OverlayFrame:HookScript("OnEnter",showmenubar1);
--- StatusTrackingBarManager.bars.OverlayFrame:HookScript("OnLeave",hidemenubar1);
-
+HelpOpenWebTicketButton:HookScript("OnEnter",showmenubar1);
+HelpOpenWebTicketButton:HookScript("OnLeave",hidemenubar1);
 for btn=1,12 do
     _G["MultiBarBottomLeftButton"..btn]:HookScript("OnEnter",showmenubar1)
     _G["MultiBarBottomLeftButton"..btn]:HookScript("OnLeave",hidemenubar1)
@@ -371,8 +376,14 @@ for btn=1,10 do
 	_G["PetActionButton"..btn]:HookScript("OnEnter",showmenubar1)
 	_G["PetActionButton"..btn]:HookScript("OnLeave",hidemenubar1)
 end
- 
 
 SpellFlyout:HookScript("OnShow", SpellFlyoutOnShow);
 SpellFlyout:HookScript("OnUpdate", SpellFlyoutUpdate);
 SpellFlyout:HookScript("OnHide", SpellFlyoutOnHide);
+
+-- StatusTrackingBarManager:HookScript("OnUpdate", getStatusBars);
+-- local function hookfunc ()
+	-- print("Hooked function called!!!!");
+-- end
+
+	-- hooksecurefunc(StatusTrackingBar, "ShowText", hookfunc);

@@ -1,9 +1,9 @@
-## Interface: 80000
+## Interface: 80100
 ## Title: Fade Bars
 ## SavedVariables: SavedSettings
 ## SavedVariablesPerCharacter: SavedSettings
-## Version: 0.1.5b
-## Notes: /fadebars Adjustable opacity on extra action bars and main menu bar.
+## Version: 0.1.7b
+## Notes: /fadebars - Adjustable opacity on extra action bars and main menu bar.
 ## Author: Louie McKeown
 ## Email: louiemckeown@gmail.com
 ## DefaultState: enabled
